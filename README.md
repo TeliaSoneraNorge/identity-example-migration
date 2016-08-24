@@ -7,21 +7,32 @@ Do either:
 
 ## Test
 curl: curl -v http://localhost:8080/e164/+47013556
+
 httpie: http --verbose http://localhost:8080/e164/+4781549300 Accept:application/json
   
 ### Example
+#### Request
 GET /e164/+4781549300 HTTP/1.1
+
 Accept: application/json
+
 Accept-Encoding: gzip, deflate
+
 Connection: keep-alive
+
 Host: localhost:8080
+
 User-Agent: HTTPie/0.9.2
 
 
 
+#### Response
 HTTP/1.1 200 
+
 Content-Type: application/json;charset=UTF-8
+
 Date: Wed, 24 Aug 2016 12:57:35 GMT
+
 Transfer-Encoding: chunked
 
 ```json
