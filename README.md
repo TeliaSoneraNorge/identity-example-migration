@@ -11,7 +11,8 @@ curl: curl -v http://localhost:8080/e164/+4781549300
 httpie: http --verbose http://localhost:8080/e164/+4781549300 Accept:application/json
   
 ### Example
-#### Request
+#### Happy
+##### Request
 ```
 GET /e164/+4781549300 HTTP/1.1
 Accept: application/json
@@ -21,7 +22,7 @@ Host: localhost:8080
 User-Agent: HTTPie/0.9.2
 ```
 
-#### Response
+##### Response
 ```
 HTTP/1.1 200 
 Content-Type: application/json;charset=UTF-8
@@ -48,5 +49,29 @@ Transfer-Encoding: chunked
         "profile": null, 
         "website": null
     }
+}
+```
+
+#### Bad :(
+##### Request
+```
+GET /e164/NOT_FOUND HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Host: localhost:8080
+User-Agent: HTTPie/0.9.2
+```
+
+##### Response
+```
+HTTP/1.1 404 
+Content-Type: application/json;charset=UTF-8
+Date: Thu, 25 Aug 2016 08:32:13 GMT
+Transfer-Encoding: chunked
+```
+```json
+{
+    "error": "Something is wrong, can't find user: NOT_FOUND"
 }
 ```
