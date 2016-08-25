@@ -15,9 +15,10 @@
  */
 package com.telia.resource;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telia.Application;
+import com.telia.model.Error;
 import com.telia.model.UserResponse;
+import com.telia.model.util.CustomMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static com.telia.resource.Controller.ERROR;
+import static com.telia.resource.Controller.NOT_FOUND;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -56,16 +60,44 @@ public class ControllerTest {
 
     @Test
     public void getUser() throws Exception {
-
         MockHttpServletResponse response = this.mockMvc.perform(get("/e164/+4781549300"))
                 .andDo(print())
-                .andExpect(status().isOk()).andReturn().getResponse();
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
 
-        UserResponse userResponse = new ObjectMapper().readValue(response.getContentAsString(), UserResponse.class);
+        CustomMapper<UserResponse> mapper = new CustomMapper<>(UserResponse.class);
+        UserResponse userResponse = mapper.deserialize(response.getContentAsString());
+
         assertThat(userResponse.getUser().getGivenName(), is(not(nullValue())));
         assertThat(userResponse.getUser().getFamilyName(), is(not(nullValue())));
         assertThat(userResponse.getUser().getPhoneNumber(), is(not(nullValue())));
         assertThat(userResponse.getUser().getExternalId(), is(equalTo("123")));
         assertThat(userResponse.getIssuerId(), is(equalTo("issuerId")));
+    }
+
+    @Test
+    public void userNotFound() throws Exception {
+        MockHttpServletResponse response = this.mockMvc.perform(get(String.format("/e164/%s", NOT_FOUND)))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn().getResponse();
+
+        CustomMapper<Error> mapper = new CustomMapper<>(Error.class);
+        Error error = mapper.deserialize(response.getContentAsString());
+
+        assertThat(error.getError(), containsString(NOT_FOUND));
+    }
+
+    @Test
+    public void internalError() throws Exception {
+        MockHttpServletResponse response = this.mockMvc.perform(get(String.format("/e164/%s", ERROR)))
+                .andDo(print())
+                .andExpect(status().isInternalServerError())
+                .andReturn().getResponse();
+
+        CustomMapper<Error> mapper = new CustomMapper<>(Error.class);
+        Error error = mapper.deserialize(response.getContentAsString());
+
+        assertThat(error.getError(), containsString("terrible"));
     }
 }

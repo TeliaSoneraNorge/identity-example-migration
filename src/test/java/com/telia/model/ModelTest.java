@@ -30,7 +30,7 @@ public class ModelTest {
 
     @Test
     public void mapError() {
-        Error error = Error.builder().error("error").build();
+        Error error = new Error("error");
         assertEqual(error, Error.class);
     }
 

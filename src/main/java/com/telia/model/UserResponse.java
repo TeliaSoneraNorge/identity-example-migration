@@ -7,7 +7,6 @@ import lombok.ToString;
 
 @Builder
 @AllArgsConstructor
-@ToString
 public class UserResponse {
 
     /**

@@ -1,9 +1,7 @@
 package com.telia.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 
-@Builder
 @AllArgsConstructor
 public class Error {
     /**
@@ -13,10 +11,5 @@ public class Error {
 
     public String getError() {
         return error;
-    }
-
-    @Override
-    public String toString() {
-        return getError();
     }
 }
