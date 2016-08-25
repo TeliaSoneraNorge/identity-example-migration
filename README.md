@@ -1,4 +1,5 @@
 # Simple user migration service example
+See [developer portal](https://identity.developer.telia.no) for overview
 
 ## Run
 Do either:
@@ -6,13 +7,12 @@ Do either:
 * run com.telia.Application from IDE
 
 ## Test
-curl: 
+### curl 
 ```
 curl -v http://localhost:8080/e164/+4781549300 --header "Accept: application/json"
 ```
 
-httpie: 
-
+### httpie
 ```
 http --verbose http://localhost:8080/e164/+4781549300 Accept:application/json
 ```
