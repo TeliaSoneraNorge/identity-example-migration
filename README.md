@@ -6,9 +6,16 @@ Do either:
 * run com.telia.Application from IDE
 
 ## Test
-curl: curl -v http://localhost:8080/e164/+4781549300
+curl: 
+```
+curl -v http://localhost:8080/e164/+4781549300 --header "Accept: application/json"
+```
 
-httpie: http --verbose http://localhost:8080/e164/+4781549300 Accept:application/json
+httpie: 
+
+```
+http --verbose http://localhost:8080/e164/+4781549300 Accept:application/json
+```
   
 ### Example
 #### Happy
